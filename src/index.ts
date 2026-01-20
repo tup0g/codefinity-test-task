@@ -18,12 +18,24 @@ async function main() {
   const filesMap = await api.read();
 
   const fileTasks: Promise<void>[] = [];
-  
+
   filesMap.forEach((content: string, filename: string) => {
-    fileTasks.push(processor.process(filename, content));
+    fileTasks.push(
+      (async () => {
+        try {
+          await processor.process(filename, content);
+        } catch (err) {
+          console.warn(`Processing failed for ${filename}:`, err);
+        }
+      })()
+    );
   });
 
-  await Promise.all(fileTasks);
+  const results = await Promise.allSettled(fileTasks);
+  const failed = results.filter(r => r.status === 'rejected');
+  if (failed.length > 0) {
+    console.warn(`Completed with ${failed.length} file task failures.`);
+  }
   console.log("All done!");
 }
 

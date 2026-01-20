@@ -18,6 +18,6 @@ export class LogProcessor implements ILogProcessor {
       }
     });
 
-    await Promise.allSettled(tasks);
+    await Promise.all(tasks);
   }
 }
