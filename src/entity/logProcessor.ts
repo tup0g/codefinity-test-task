@@ -1,16 +1,16 @@
-import type { iLogProcessor } from '../contracts/iLogProcessor';
-import type { iParser } from '../contracts/iParser';
-import type { iAction } from '../contracts/iAction';
-import type { iLogMessage } from '../contracts/iLogMessage';
+import type { ILogProcessor } from '../contracts/iLogProcessor';
+import type { IParser } from '../contracts/iParser';
+import type { IAction } from '../contracts/iAction';
+import type { ILogMessage } from '../contracts/iLogMessage';
 
-export class LogProcessor implements iLogProcessor {
+export class LogProcessor implements ILogProcessor {
   constructor(
-    private readonly _parser: iParser<iLogMessage>,
-    private readonly _actions: iAction<iLogMessage>[]
+    private readonly _parser: IParser<ILogMessage>,
+    private readonly _actions: IAction<ILogMessage>[]
   ) {}
 
   public async process(filename: string, content: string): Promise<void> {
-    const messages: iLogMessage[] = this._parser.parse(content, filename);
+    const messages: ILogMessage[] = this._parser.parse(content, filename);
     
     const tasks = messages.map(async (msg) => {
       for (const action of this._actions) {

@@ -8,7 +8,7 @@ async function main() {
   const parser = new LogParser(':');
   
   const actions = [
-    new RandomDelayAction(0, 500),
+    new RandomDelayAction(100, 5000),
     new ApiSaveAction(api),
     new ConsoleLogAction()
   ];

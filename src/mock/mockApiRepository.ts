@@ -1,6 +1,6 @@
-import type { iFileReader } from '../contracts/iFileReader';
+import type { IFileReader } from '../contracts/iFileReader';
 
-export class MockApiRepository implements iFileReader {
+export class MockApiRepository implements IFileReader {
   private readonly _storage: Map<string, string>;
 
   constructor() {

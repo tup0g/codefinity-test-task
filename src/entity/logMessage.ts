@@ -1,6 +1,6 @@
-import type { iLogMessage } from '../contracts/iLogMessage';
+import type { ILogMessage } from '../contracts/iLogMessage';
 
-export class LogMessage implements iLogMessage {
+export class LogMessage implements ILogMessage {
   constructor(
     private readonly _message: string,
     private readonly _timestamp: string,
