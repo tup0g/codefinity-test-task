@@ -13,11 +13,12 @@ export class LogParser implements IParser<ILogMessage>{
       const trimmed = line.trim();
       if (!trimmed) continue;
 
-      const lastIndex = trimmed.lastIndexOf(this._delimiter);
-      if (lastIndex === -1) continue;
+      // Split by " : " (with spaces) to separate message from timestamp
+      const parts = trimmed.split(' : ');
+      if (parts.length < 2) continue;
 
-      const msg = trimmed.substring(0, lastIndex).trim();
-      const time = trimmed.substring(lastIndex + 1).trim();
+      const msg = parts[0].trim();
+      const time = parts.slice(1).join(' : ').trim();
 
       result.push(new LogMessage(msg, time, filename));
     }

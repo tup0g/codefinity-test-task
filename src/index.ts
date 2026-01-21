@@ -17,18 +17,14 @@ async function main() {
   
   const filesMap = await api.read();
 
-  const fileTasks: Promise<void>[] = [];
-
-  filesMap.forEach((content: string, filename: string) => {
-    fileTasks.push(
-      (async () => {
-        try {
-          await processor.process(filename, content);
-        } catch (err) {
-          console.warn(`Processing failed for ${filename}:`, err);
-        }
-      })()
-    );
+  const fileTasks = Array.from(filesMap.entries()).map(([filename, content]) => {
+    return (async () => {
+      try {
+        await processor.process(filename, content);
+      } catch (err) {
+        console.warn(`Processing failed for ${filename}:`, err);
+      }
+    })();
   });
 
   const results = await Promise.allSettled(fileTasks);

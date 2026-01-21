@@ -18,11 +18,12 @@ export class ConsoleLogAction implements IAction<ILogMessage> {
   constructor(private readonly _prefix: string = "Saved message -") {}
 
   public async execute(message: ILogMessage): Promise<void> {
-    const type = message.text().length > 8 ? "long" : "short"; 
-    const outName = message.source().replace('file', 'out');
+    const text = message.text().trim();
+    const type = text.length > 8 ? "long" : "short"; 
+    const outName = message.source().replace('.txt', '_out.txt');
 
     console.log(
-      `${this._prefix} ${message.text()} to ${outName} as ${type}`
+      `${this._prefix} ${message.text()} : ${message.date()} to ${outName} as ${type}`
     );
   }
 }
@@ -32,11 +33,12 @@ export class ApiSaveAction implements IAction<ILogMessage> {
 
   public async execute(message: ILogMessage): Promise<void> {
     const outName = message.source().replace('.txt', '_out.txt');
+    const text = message.text().trim();
     
     const body = JSON.stringify({
       message: message.text(),
       timestamp: message.date(),
-      type: message.text().length > 8 ? "long" : "short",
+      type: text.length > 8 ? "long" : "short",
     });
 
     await this._api.post(outName, body);
